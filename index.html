@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Italy Travel WODs</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1208;
+    --surface: #221908;
+    --card: #2b200c;
+    --accent: #f47c2b;
+    --accent2: #5d9e3f;
+    --accent3: #c8a96e;
+    --text: #f5edd8;
+    --muted: #8a7a5a;
+    --border: #3a2e14;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  header {
+    background: linear-gradient(160deg, #2e1f06 0%, #1a2b10 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: 'ITALIA';
+    position: absolute;
+    right: -10px; top: -10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 120px;
+    color: rgba(244,124,43,0.06);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent2);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 8vw, 64px);
+    line-height: 0.95;
+    letter-spacing: 1px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: 300;
+  }
+
+  .gear-bar {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .gear-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .gear-pill span { color: var(--accent2); margin-right: 5px; }
+
+  main { padding: 24px 16px; max-width: 680px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 32px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .format-note {
+    font-size: 11px;
+    color: var(--accent3);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .skill-tag {
+    display: inline-block;
+    background: rgba(200,169,110,0.15);
+    color: var(--accent3);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .workout-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .workout-card:hover { border-color: #5a4020; }
+  .workout-card.skill-card { border-color: rgba(200,169,110,0.3); }
+  .workout-card.skill-card:hover { border-color: var(--accent3); }
+
+  .card-header {
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .wod-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 32px;
+  }
+
+  .wod-num.gold { color: var(--accent3); }
+
+  .card-meta { flex: 1; }
+
+  .wod-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+
+  .wod-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .badge-time  { background: rgba(244,124,43,0.15); color: var(--accent); }
+  .badge-type  { background: rgba(93,158,63,0.15);  color: var(--accent2); }
+  .badge-eq    { background: rgba(200,169,110,0.10); color: var(--accent3); }
+  .badge-skill { background: rgba(200,169,110,0.2);  color: var(--accent3); border: 1px solid rgba(200,169,110,0.3); }
+
+  .chevron {
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.25s;
+  }
+
+  .card-body {
+    display: none;
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-body.open { display: block; }
+
+  .eq-toggle {
+    display: flex;
+    margin-top: 14px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .eq-btn {
+    flex: 1;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--muted);
+    border: none;
+    transition: background 0.2s, color 0.2s;
+    border-right: 1px solid var(--border);
+  }
+
+  .eq-btn:last-child { border-right: none; }
+  .eq-btn.active-bar { background: rgba(244,124,43,0.18); color: var(--accent); }
+  .eq-btn.active-db  { background: rgba(93,158,63,0.18);  color: var(--accent2); }
+
+  .eq-panel { display: none; }
+  .eq-panel.visible { display: block; }
+
+  .workout-block {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+  }
+
+  .workout-block h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .movement-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .movement-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding: 7px 10px;
+    background: var(--card);
+    border-radius: 5px;
+  }
+
+  .movement-list li span:first-child { font-weight: 500; }
+  .movement-list li span:last-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--accent);
+  }
+
+  .movement-list li.highlight { border-left: 2px solid var(--accent3); }
+  .movement-list li.highlight span:last-child { color: var(--accent3); }
+
+  .amrap-grid { display: flex; flex-direction: column; gap: 8px; }
+
+  .amrap-round {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .amrap-round-header {
+    background: rgba(244,124,43,0.1);
+    padding: 5px 10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .amrap-round-header.green { background: rgba(93,158,63,0.1); color: var(--accent2); }
+
+  .amrap-round-header span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+
+  .amrap-movements {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .amrap-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(58,46,20,0.5);
+  }
+
+  .amrap-row:last-child { border-bottom: none; }
+  .amrap-row .move { font-weight: 500; }
+  .amrap-row .reps { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: var(--accent); }
+  .amrap-row .reps.green { color: var(--accent2); }
+  .amrap-row .reps.gold  { color: var(--accent3); }
+  .amrap-row.skill-move .move { color: var(--accent3); }
+
+  .run-row {
+    background: rgba(200,169,110,0.08);
+    border-radius: 4px;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent3);
+    margin-bottom: 6px;
+  }
+
+  .run-row span:last-child { font-family: 'Bebas Neue', sans-serif; font-size: 15px; }
+
+  .scale-box {
+    background: rgba(200,169,110,0.06);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 10px;
+  }
+
+  .scale-box strong {
+    color: var(--accent3);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .scale-rows { display: flex; flex-direction: column; gap: 4px; }
+
+  .scale-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #bba980;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(58,46,20,0.4);
+  }
+
+  .scale-row:last-child { border-bottom: none; }
+  .scale-row span:first-child { font-weight: 600; color: var(--text); min-width: 120px; }
+
+  .wod-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+
+  .tip-box {
+    border-left: 3px solid var(--accent2);
+    padding: 10px 12px;
+    margin-top: 12px;
+    background: rgba(93,158,63,0.07);
+    border-radius: 0 5px 5px 0;
+  }
+
+  .tip-box p { font-size: 12px; color: #bba980; line-height: 1.5; }
+
+  .tip-box strong {
+    color: var(--accent2);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .score-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .score-line strong { color: var(--text); }
+
+  .week-grid {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .week-grid strong {
+    color: var(--text);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .week-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .week-row:last-child { border-bottom: none; }
+
+  .day-label {
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    min-width: 36px;
+    padding-top: 2px;
+  }
+
+  .week-detail { flex: 1; }
+  .week-detail .wname { color: var(--text); font-weight: 500; font-size: 13px; }
+  .week-detail .wnote { color: var(--muted); font-size: 12px; }
+
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: #4a3a20;
+    margin-top: 40px;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">Travel WODs</div>
+  <h1>Train in<br><span>Italy</span></h1>
+  <p class="subtitle">Murph-style workouts with minimal gear. Pull-up bar OR dumbbell — pick what you have.</p>
+  <div class="gear-bar">
+    <div class="gear-pill"><span>✓</span>Pull-up Bar</div>
+    <div class="gear-pill"><span>✓</span>Dumbbell ≤30 lbs</div>
+    <div class="gear-pill"><span>✓</span>Bodyweight</div>
+    <div class="gear-pill"><span>✓</span>Running</div>
+  </div>
+</header>
+
+<main>
+
+<!-- SKILL FOCUS -->
+<div class="section-label">Skill Focus <span class="format-note">— HSPU, Pistols, L-sit & more</span></div>
+
+<div class="workout-card skill-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num gold">S1</div>
+    <div class="card-meta">
+      <div class="wod-name">Pompeii Press <span class="skill-tag">HSPU</span></div>
+      <div class="wod-tags">
+        <span class="badge badge-skill">Handstand Push-up</span>
+        <span class="badge badge-time">For Time</span>
+        <span class="badge badge-eq">Bodyweight</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="workout-block">
+      <h4>For Time — 21-15-9</h4>
+      <ul class="movement-list">
+        <li><span>400m Run</span><span>open</span></li>
+        <li class="highlight"><span>Handstand Push-ups</span><span>21-15-9</span></li>
+        <li><span>Pistol Squats (alternating)</span><span>21-15-9</span></li>
+        <li><span>400m Run</span><span>close</span></li>
+      </ul>
+    </div>
+    <div class="scale-box">
+      <strong>Scale Options</strong>
+      <div class="scale-rows">
+        <div class="scale-row"><span>HSPU Rx</span>Strict wall handstand push-up, head to floor</div>
+        <div class="scale-row"><span>HSPU Scale 1</span>Pike push-ups (feet on chair or step)</div>
+        <div class="scale-row"><span>HSPU Scale 2</span>Regular pike push-ups from floor</div>
+        <div class="scale-row"><span>Pistol Rx</span>Full single-leg squat, heel down</div>
+        <div class="scale-row"><span>Pistol Scale 1</span>Assisted pistol (hold door frame or post)</div>
+        <div class="scale-row"><span>Pistol Scale 2</span>Bulgarian split squat (rear foot elevated)</div>
+      </div>
+    </div>
+    <p class="wod-desc">Two elite CrossFit movements back to back. Break the HSPUs early — going to failure on the 21 makes the 15 brutal.</p>
+    <div class="tip-box">
+      <strong>HSPU Setup</strong>
+      <p>Find a solid wall — stone walls in Italy are everywhere. Kick up, hands ~6–8 inches from the wall, shoulder-width or slightly wider. Lower slowly, press explosively.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total time</strong></div>
+  </div>
+</div>
+
+<div class="workout-card skill-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num gold">S2</div>
+    <div class="card-meta">
+      <div class="wod-name">Sicilian Circuit <span class="skill-tag">PISTOLS</span></div>
+      <div class="wod-tags">
+        <span class="badge badge-skill">Pistol Squat</span>
+        <span class="badge badge-time">5 Rounds</span>
+        <span class="badge badge-eq">Bar or BW</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-s2')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-s2')">💪 Bodyweight Only</button>
+    </div>
+    <div id="wod-s2-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>5 Rounds For Time — Bar</h4>
+        <ul class="movement-list">
+          <li><span>200m Run</span><span>×1</span></li>
+          <li class="highlight"><span>Pistol Squats (each leg)</span><span>5</span></li>
+          <li><span>Pull-ups</span><span>7</span></li>
+          <li class="highlight"><span>L-sit Hold (bar or floor)</span><span>15s</span></li>
+          <li><span>Burpees</span><span>5</span></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wod-s2-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>5 Rounds For Time — Bodyweight Only</h4>
+        <ul class="movement-list">
+          <li><span>200m Run</span><span>×1</span></li>
+          <li class="highlight"><span>Pistol Squats (each leg)</span><span>5</span></li>
+          <li><span>Push-ups</span><span>15</span></li>
+          <li class="highlight"><span>L-sit Hold (floor)</span><span>15s</span></li>
+          <li><span>Burpees</span><span>7</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="scale-box">
+      <strong>Scale Options</strong>
+      <div class="scale-rows">
+        <div class="scale-row"><span>Pistol Rx</span>Full single-leg squat to depth</div>
+        <div class="scale-row"><span>Pistol Scale</span>Assisted or to a low box/step</div>
+        <div class="scale-row"><span>L-sit Rx</span>Legs fully straight, parallel to ground</div>
+        <div class="scale-row"><span>L-sit Scale</span>Tuck L-sit (knees bent toward chest)</div>
+      </div>
+    </div>
+    <p class="wod-desc">Leg strength, pulling, core compression, and conditioning all in one. The L-sit is harder than it looks — tuck your knees if 15s straight is too much.</p>
+    <div class="tip-box">
+      <strong>L-sit on the Floor</strong>
+      <p>Use two fists (knuckles down). Press hard, lock elbows, lift hips, extend legs. Even 5 seconds unbroken is solid progress.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total time</strong></div>
+  </div>
+</div>
+
+<div class="workout-card skill-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num gold">S3</div>
+    <div class="card-meta">
+      <div class="wod-name">The Gymnast <span class="skill-tag">SKILL</span></div>
+      <div class="wod-tags">
+        <span class="badge badge-skill">Full Gymnastics</span>
+        <span class="badge badge-time">For Time</span>
+        <span class="badge badge-eq">Bar + Wall</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="workout-block">
+      <h4>For Time — Chipper</h4>
+      <ul class="movement-list">
+        <li><span>400m Run</span><span>open</span></li>
+        <li class="highlight"><span>Handstand Push-ups</span><span>15</span></li>
+        <li><span>Pull-ups</span><span>20</span></li>
+        <li class="highlight"><span>Pistol Squats (total)</span><span>20</span></li>
+        <li><span>Push-ups</span><span>30</span></li>
+        <li class="highlight"><span>L-sit Hold (cumulative)</span><span>60s</span></li>
+        <li><span>Hollow Rocks</span><span>30</span></li>
+        <li><span>400m Run</span><span>close</span></li>
+      </ul>
+    </div>
+    <div class="scale-box">
+      <strong>Scale Options</strong>
+      <div class="scale-rows">
+        <div class="scale-row"><span>HSPU → Pike PU</span>Feet on wall or chair, head to floor</div>
+        <div class="scale-row"><span>Pistols → Split Squat</span>10 each leg Bulgarian split squat</div>
+        <div class="scale-row"><span>L-sit → Tuck</span>Accumulated 60s in tuck L-sit</div>
+        <div class="scale-row"><span>Hollow Rocks → Hold</span>30s hollow body hold × 2</div>
+      </div>
+    </div>
+    <p class="wod-desc">The hardest one on the list — pure CrossFit gymnastics. L-sit is cumulative; rest as needed and chip away at 60 total seconds. Give yourself 30–40 minutes.</p>
+    <div class="tip-box">
+      <strong>Macro Tip</strong>
+      <p>Full training day — hit your 300g carb target. Gymnastics movements are surprisingly glycolytic. Don't show up fasted.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total time</strong></div>
+  </div>
+</div>
+
+<!-- 4x5 AMRAPs -->
+<div class="section-label">4 × 5-Min AMRAPs <span class="format-note">— run to start each block</span></div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">A</div>
+    <div class="card-meta">
+      <div class="wod-name">Jungle Intervals</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">4 × 5 Min</span>
+        <span class="badge badge-type">AMRAP</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <p class="wod-desc" style="margin-top:14px;">Each 5-min block starts with a 200m run. Clock keeps ticking — the faster you run, the more reps you get. 1 min rest between blocks.</p>
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-a')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-a')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-a-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>All 4 Blocks — Pull-up Bar</h4>
+        <div class="amrap-grid">
+          <div class="amrap-round">
+            <div class="amrap-round-header">Block 1 <span>5 min AMRAP</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row"><span class="move">Pull-ups</span><span class="reps">5</span></div>
+              <div class="amrap-row"><span class="move">Push-ups</span><span class="reps">10</span></div>
+              <div class="amrap-row"><span class="move">Air Squats</span><span class="reps">15</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header">Block 2 <span>5 min AMRAP — SKILL</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row skill-move"><span class="move">Handstand Push-ups</span><span class="reps gold">3</span></div>
+              <div class="amrap-row"><span class="move">Pull-ups</span><span class="reps">6</span></div>
+              <div class="amrap-row skill-move"><span class="move">Pistol Squats (alt)</span><span class="reps gold">6</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header">Block 3 <span>5 min AMRAP</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row"><span class="move">Chin-ups (supinated)</span><span class="reps">5</span></div>
+              <div class="amrap-row"><span class="move">Diamond Push-ups</span><span class="reps">10</span></div>
+              <div class="amrap-row"><span class="move">Jump Squats</span><span class="reps">15</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header">Block 4 <span>5 min AMRAP — FINISHER</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row skill-move"><span class="move">Burpee Pull-ups</span><span class="reps gold">4</span></div>
+              <div class="amrap-row skill-move"><span class="move">Tuck Jumps</span><span class="reps gold">8</span></div>
+              <div class="amrap-row"><span class="move">Hollow Rocks</span><span class="reps">12</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="wod-a-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>All 4 Blocks — Dumbbell</h4>
+        <div class="amrap-grid">
+          <div class="amrap-round">
+            <div class="amrap-round-header green">Block 1 <span>5 min AMRAP</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row"><span class="move">DB Thrusters</span><span class="reps green">8</span></div>
+              <div class="amrap-row"><span class="move">Push-ups</span><span class="reps green">10</span></div>
+              <div class="amrap-row"><span class="move">DB Goblet Squat</span><span class="reps green">12</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header green">Block 2 <span>5 min AMRAP — SKILL</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row skill-move"><span class="move">Pike Push-ups (feet elevated)</span><span class="reps gold">5</span></div>
+              <div class="amrap-row skill-move"><span class="move">Pistol Squats (alt)</span><span class="reps gold">6</span></div>
+              <div class="amrap-row"><span class="move">Burpees</span><span class="reps green">6</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header green">Block 3 <span>5 min AMRAP</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row"><span class="move">DB Single-Arm Row (each)</span><span class="reps green">8</span></div>
+              <div class="amrap-row"><span class="move">DB Push Press</span><span class="reps green">10</span></div>
+              <div class="amrap-row"><span class="move">Air Squats</span><span class="reps green">15</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header green">Block 4 <span>5 min AMRAP — FINISHER</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>200m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row skill-move"><span class="move">Tuck Jumps</span><span class="reps gold">8</span></div>
+              <div class="amrap-row"><span class="move">DB Thrusters</span><span class="reps green">6</span></div>
+              <div class="amrap-row"><span class="move">Hollow Rocks</span><span class="reps green">12</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>Gold = Skill Movements</strong>
+      <p>Block 2 is intentionally harder — gymnastics movements highlighted in gold. Scale them but don't skip them.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total rounds + reps across 4 blocks</strong></div>
+  </div>
+</div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">B</div>
+    <div class="card-meta">
+      <div class="wod-name">Coast Road</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">4 × 5 Min</span>
+        <span class="badge badge-type">AMRAP</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <p class="wod-desc" style="margin-top:14px;">Each block opens with a 400m run — longer opener, less AMRAP time, more conditioning. 90 sec rest between blocks.</p>
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-b')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-b')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-b-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>All 4 Blocks — Pull-up Bar</h4>
+        <div class="amrap-grid">
+          <div class="amrap-round">
+            <div class="amrap-round-header">Blocks 1 & 2 <span>5 min AMRAP × 2</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>400m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row"><span class="move">Pull-ups</span><span class="reps">7</span></div>
+              <div class="amrap-row skill-move"><span class="move">Handstand Push-ups</span><span class="reps gold">3</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header">Blocks 3 & 4 <span>5 min AMRAP × 2</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>400m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row skill-move"><span class="move">Pistol Squats (alt)</span><span class="reps gold">6</span></div>
+              <div class="amrap-row"><span class="move">Tuck Jumps</span><span class="reps">8</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="wod-b-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>All 4 Blocks — Dumbbell</h4>
+        <div class="amrap-grid">
+          <div class="amrap-round">
+            <div class="amrap-round-header green">Blocks 1 & 2 <span>5 min AMRAP × 2</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>400m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row"><span class="move">DB Thrusters</span><span class="reps green">10</span></div>
+              <div class="amrap-row skill-move"><span class="move">Pike Push-ups (feet elevated)</span><span class="reps gold">5</span></div>
+            </div>
+          </div>
+          <div class="amrap-round">
+            <div class="amrap-round-header green">Blocks 3 & 4 <span>5 min AMRAP × 2</span></div>
+            <div class="amrap-movements">
+              <div class="run-row"><span>400m Run (start here)</span><span>→</span></div>
+              <div class="amrap-row skill-move"><span class="move">Pistol Squats (alt)</span><span class="reps gold">6</span></div>
+              <div class="amrap-row"><span class="move">DB Goblet Squat</span><span class="reps green">10</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>Pacing Note</strong>
+      <p>400m eats most of your 5 minutes — you'll get 1–3 rounds of exercises. Push the run hard; pistols in blocks 3 & 4 will feel like a completely different workout after two hard sprints.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total rounds + reps across 4 blocks</strong></div>
+  </div>
+</div>
+
+<!-- CLASSIC -->
+<div class="section-label">Classic Murph-Style</div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">01</div>
+    <div class="card-meta">
+      <div class="wod-name">Mini Murph</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">20–30 min</span>
+        <span class="badge badge-type">For Time</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-1')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-1')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-1-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>For Time — Pull-up Bar</h4>
+        <ul class="movement-list">
+          <li><span>400m Run</span><span>×2</span></li>
+          <li><span>Pull-ups</span><span>50</span></li>
+          <li><span>Push-ups</span><span>100</span></li>
+          <li class="highlight"><span>Pistol Squats (alternating)</span><span>50</span></li>
+          <li><span>400m Run</span><span>×2</span></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wod-1-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>For Time — Dumbbell</h4>
+        <ul class="movement-list">
+          <li><span>400m Run</span><span>×2</span></li>
+          <li><span>DB Thrusters</span><span>50</span></li>
+          <li><span>Push-ups</span><span>100</span></li>
+          <li><span>DB Goblet Squat</span><span>75</span></li>
+          <li><span>400m Run</span><span>×2</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="wod-desc">Pistols replace air squats in the bar version. Partition any way you want — classic Cindy sets work great. Scale pistols to Bulgarian split squats if needed.</p>
+    <div class="tip-box">
+      <strong>Macro Tip</strong>
+      <p>Full CrossFit day — hit your 300g carb target. Banana + oats before, rice or sweet potato after.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total time</strong></div>
+  </div>
+</div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">02</div>
+    <div class="card-meta">
+      <div class="wod-name">Cindy on the Road</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">20 min AMRAP</span>
+        <span class="badge badge-type">AMRAP</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-2')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-2')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-2-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>AMRAP 20 Min — Pull-up Bar</h4>
+        <ul class="movement-list">
+          <li><span>Pull-ups</span><span>5</span></li>
+          <li><span>Push-ups</span><span>10</span></li>
+          <li><span>Air Squats</span><span>15</span></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wod-2-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>AMRAP 20 Min — Dumbbell</h4>
+        <ul class="movement-list">
+          <li><span>DB Push Press</span><span>8</span></li>
+          <li><span>DB Single-Arm Row (each)</span><span>8</span></li>
+          <li><span>DB Goblet Squat</span><span>12</span></li>
+          <li><span>Push-ups</span><span>10</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="wod-desc">Classic Cindy. Add a 200m run every 5 rounds. Every 4th round in the bar version, swap air squats for 5 pistols each leg and push-ups for 5 HSPUs.</p>
+    <div class="tip-box">
+      <strong>Optional Twist</strong>
+      <p>Every 4th round: replace air squats with 5 pistols each leg and push-ups with 5 HSPUs — like doing Cindy with a skill test built in.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total rounds + reps</strong></div>
+  </div>
+</div>
+
+<!-- CHIPPER -->
+<div class="section-label">Chipper & Grind</div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">03</div>
+    <div class="card-meta">
+      <div class="wod-name">Roman Holiday</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">For Time</span>
+        <span class="badge badge-type">21-15-9</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-3')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-3')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-3-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>For Time — Pull-up Bar (21-15-9)</h4>
+        <ul class="movement-list">
+          <li><span>400m Run</span><span>open</span></li>
+          <li class="highlight"><span>Handstand Push-ups</span><span>21-15-9</span></li>
+          <li><span>Pull-ups</span><span>21-15-9</span></li>
+          <li><span>400m Run</span><span>close</span></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wod-3-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>For Time — Dumbbell (21-15-9)</h4>
+        <ul class="movement-list">
+          <li><span>400m Run</span><span>open</span></li>
+          <li><span>DB Thrusters</span><span>21-15-9</span></li>
+          <li><span>DB Hang Power Clean</span><span>21-15-9</span></li>
+          <li><span>400m Run</span><span>close</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="wod-desc">Bar version is HSPU + pull-up — pure pressing and pulling. Break the 21s into 3 sets of 7; going to failure makes the 15s brutal.</p>
+    <div class="tip-box">
+      <strong>Performance Note</strong>
+      <p>HSPUs and pull-ups back-to-back are shoulder intensive. Manage your sets — go unbroken on the 9s as your sprint finish.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total time</strong></div>
+  </div>
+</div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">04</div>
+    <div class="card-meta">
+      <div class="wod-name">Venice Sprint</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">5 Rounds</span>
+        <span class="badge badge-type">For Time</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-4')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-4')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-4-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>5 Rounds For Time — Pull-up Bar</h4>
+        <ul class="movement-list">
+          <li><span>400m Run</span><span>×1</span></li>
+          <li><span>Pull-ups</span><span>10</span></li>
+          <li class="highlight"><span>Handstand Push-ups</span><span>5</span></li>
+          <li class="highlight"><span>Pistol Squats (each leg)</span><span>5</span></li>
+          <li><span>Hollow Hold</span><span>30s</span></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wod-4-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>5 Rounds For Time — Dumbbell</h4>
+        <ul class="movement-list">
+          <li><span>400m Run</span><span>×1</span></li>
+          <li><span>DB Single-Arm Row (each)</span><span>10</span></li>
+          <li class="highlight"><span>Pike Push-ups (feet elevated)</span><span>8</span></li>
+          <li class="highlight"><span>Pistol Squats (each leg)</span><span>5</span></li>
+          <li><span>Hollow Hold</span><span>30s</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="wod-desc">Full-body 5-rounder with gymnastics baked in. Pistols and a pressing skill in every version — the hollow hold is non-negotiable.</p>
+    <div class="tip-box">
+      <strong>Core Note</strong>
+      <p>Hollow hold: lower back flat, arms overhead, legs straight and low. Tuck knees to scale. Don't skip it to save time — it's the point.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Total time</strong></div>
+  </div>
+</div>
+
+<!-- STRENGTH -->
+<div class="section-label">Strength Bias</div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">05</div>
+    <div class="card-meta">
+      <div class="wod-name">Tuscan Grind</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">Every 3 Min × 6</span>
+        <span class="badge badge-type">EMOM-Style</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-5')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-5')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-5-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>Every 3 Min × 6 — Pull-up Bar</h4>
+        <ul class="movement-list">
+          <li><span>Max Pull-ups</span><span>—</span></li>
+          <li class="highlight"><span>Handstand Push-ups</span><span>5</span></li>
+          <li class="highlight"><span>Pistol Squats (each leg)</span><span>5</span></li>
+          <li><span>Push-ups</span><span>10</span></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wod-5-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>Every 3 Min × 6 — Dumbbell</h4>
+        <ul class="movement-list">
+          <li><span>DB Push Press</span><span>10</span></li>
+          <li><span>DB Romanian DL</span><span>12</span></li>
+          <li class="highlight"><span>Pistol Squats (each leg)</span><span>5</span></li>
+          <li><span>Push-ups</span><span>10</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="wod-desc">Complete the work, rest whatever's left of 3 minutes. Both versions include pistols — practice them here when you're not gassed from conditioning.</p>
+    <div class="tip-box">
+      <strong>Lean Bulk Note</strong>
+      <p>Lower intensity day — drop carbs to ~200–220g if this is your only session. Keep protein at target.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Bar: total pull-ups | DB: all rounds completed</strong></div>
+  </div>
+</div>
+
+<div class="workout-card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="wod-num">06</div>
+    <div class="card-meta">
+      <div class="wod-name">Amalfi Ladder</div>
+      <div class="wod-tags">
+        <span class="badge badge-time">25–35 min</span>
+        <span class="badge badge-type">Ascending Ladder</span>
+        <span class="badge badge-eq">Bar or DB</span>
+      </div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="card-body">
+    <div class="eq-toggle">
+      <button class="eq-btn active-bar" onclick="switchEq(this,'bar','wod-6')">🔗 Pull-up Bar</button>
+      <button class="eq-btn" onclick="switchEq(this,'db','wod-6')">🏋 Dumbbell</button>
+    </div>
+    <div id="wod-6-bar" class="eq-panel visible">
+      <div class="workout-block">
+        <h4>Ladder 2-4-6-8-10... — Pull-up Bar</h4>
+        <ul class="movement-list">
+          <li><span>Pull-ups</span><span>ladder</span></li>
+          <li class="highlight"><span>Handstand Push-ups</span><span>ladder ÷ 2</span></li>
+          <li><span>Burpees</span><span>ladder</span></li>
+          <li><span>200m Run</span><span>every round</span></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wod-6-db" class="eq-panel">
+      <div class="workout-block">
+        <h4>Ladder 2-4-6-8-10... — Dumbbell</h4>
+        <ul class="movement-list">
+          <li><span>DB Thrusters</span><span>ladder</span></li>
+          <li class="highlight"><span>Tuck Jumps</span><span>ladder</span></li>
+          <li><span>Burpees</span><span>ladder</span></li>
+          <li><span>200m Run</span><span>every round</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="wod-desc">HSPU ladder is half the pull-up count (round of 4 = 2 HSPUs). Keeps them achievable as the ladder climbs. 25-min cap, aim to finish the round of 10.</p>
+    <div class="tip-box">
+      <strong>Strategy</strong>
+      <p>Rounds 1–4 feel easy — that's the trap. Break HSPUs into singles by round 8 if needed; missing a rep and re-kicking up wastes precious time.</p>
+    </div>
+    <div class="score-line"><span>Score</span><strong>Highest completed round</strong></div>
+  </div>
+</div>
+
+<!-- WEEKLY -->
+<div class="section-label">Sample Italy Week</div>
+
+<div class="week-grid">
+  <strong>Pick your equipment each day — both options are always ready</strong>
+  <div class="week-row">
+    <span class="day-label">MON</span>
+    <div class="week-detail">
+      <div class="wname">Jungle Intervals (WOD A)</div>
+      <div class="wnote">4×5 AMRAP with skill block — full carb day (300g)</div>
+    </div>
+  </div>
+  <div class="week-row">
+    <span class="day-label">TUE</span>
+    <div class="week-detail">
+      <div class="wname">Pompeii Press (S1) + Tuscan Grind (05)</div>
+      <div class="wnote">Skill focus + strength — moderate carbs (~250g)</div>
+    </div>
+  </div>
+  <div class="week-row">
+    <span class="day-label">WED</span>
+    <div class="week-detail">
+      <div class="wname">Rest or easy walk</div>
+      <div class="wnote">Rest day carb cycle — 200–220g, protein steady</div>
+    </div>
+  </div>
+  <div class="week-row">
+    <span class="day-label">THU</span>
+    <div class="week-detail">
+      <div class="wname">Coast Road (WOD B)</div>
+      <div class="wnote">4×5 AMRAP with pistols — hard conditioning day, full carbs</div>
+    </div>
+  </div>
+  <div class="week-row">
+    <span class="day-label">FRI</span>
+    <div class="week-detail">
+      <div class="wname">The Gymnast (S3)</div>
+      <div class="wnote">Full gymnastics chipper — hardest day, full 300g carbs</div>
+    </div>
+  </div>
+  <div class="week-row">
+    <span class="day-label">SAT</span>
+    <div class="week-detail">
+      <div class="wname">Amalfi Ladder (06) or Venice Sprint (04)</div>
+      <div class="wnote">Pick your poison — go with a friend if you can</div>
+    </div>
+  </div>
+  <div class="week-row">
+    <span class="day-label">SUN</span>
+    <div class="week-detail">
+      <div class="wname">Full rest</div>
+      <div class="wnote">Walk, explore, eat well — rest day carb cycle</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>ORESTE'S ITALY TRAINING GUIDE • TAP ANY WORKOUT TO EXPAND</footer>
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  }
+
+  function switchEq(btn, type, wodId) {
+    const container = btn.closest('.card-body');
+    const btns = container.querySelectorAll('.eq-btn');
+    btns.forEach(b => b.classList.remove('active-bar', 'active-db'));
+    btn.classList.add(type === 'bar' ? 'active-bar' : 'active-db');
+    const barPanel = document.getElementById(wodId + '-bar');
+    const dbPanel  = document.getElementById(wodId + '-db');
+    if (type === 'bar') {
+      barPanel.classList.add('visible');
+      dbPanel.classList.remove('visible');
+    } else {
+      dbPanel.classList.add('visible');
+      barPanel.classList.remove('visible');
+    }
+  }
+</script>
+
+</body>
+</html>
